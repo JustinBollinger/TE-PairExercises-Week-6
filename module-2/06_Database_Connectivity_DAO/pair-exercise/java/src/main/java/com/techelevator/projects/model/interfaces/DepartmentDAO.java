@@ -12,7 +12,7 @@ public interface DepartmentDAO {
 	 * 
 	 * @return all departments as Department objects in a List
 	 */
-	public List<Department> getAllDepartments(ArrayList<Department> name);
+	public List<Department> getAllDepartments();
 
 	/**
 	 * Get all the departments whose name contains the search string. Remember

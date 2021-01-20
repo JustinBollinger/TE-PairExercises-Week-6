@@ -2,8 +2,6 @@ package com.techelevator.projects.model.jdbc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Attributes.Name;
-
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,27 +21,33 @@ public class JDBCDepartmentDAO implements DepartmentDAO
 	}
 
 	@Override
-	public List<Department> getAllDepartments(ArrayList<Department> name)
+	public List<Department> getAllDepartments()
 	{
 		// ***code here***
 		// 1. container to hold departments
 		List<Department> departments = new ArrayList<Department>();
 		
 		// query written out
-		String query = "SELECT name\r\n" + 
+		String query = "SELECT department_id\r\n" + 
+						"        , name\r\n" + 
 					   "FROM department;";
 		
 		// execute the query
-		SqlRowSet rows = jdbcTemplate.queryForRowSet(query, name);
+		SqlRowSet rows = jdbcTemplate.queryForRowSet(query);
 		
 		while (rows.next())
 		{
-			Department department = mapRowToDepartment(rows);
+			Long id = rows.getLong("department_id");
+			String deptName = rows.getString("name");
+			
+			
+//			Department department = mapRowToDepartment(rows);
+			Department department = new Department();
+			department.setId(id);
+			department.setName(deptName);
 			
 			departments.add(department);
-		}
-		
-		
+		}	
 		return departments;
 	}
 
@@ -57,7 +61,7 @@ public class JDBCDepartmentDAO implements DepartmentDAO
 	@Override
 	public void saveDepartment(Department updatedDepartment)
 	{
-
+		
 	}
 
 	@Override
@@ -71,5 +75,17 @@ public class JDBCDepartmentDAO implements DepartmentDAO
 	{
 		return null;
 	}
-
+	
+//	private Department mapRowToDepartment(SqlRowSet rows)
+//	{
+//
+//		
+//		Department theDepartment;
+//		theDepartment = new Department();
+//		//theDepartment.setId(rows.getLong("id"));
+//		theDepartment.setName(rows.getString("name"));
+//		return theDepartment;	
+//	}
+	
+	
 }
