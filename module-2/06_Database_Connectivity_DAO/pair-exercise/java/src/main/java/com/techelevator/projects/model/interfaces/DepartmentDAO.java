@@ -1,5 +1,6 @@
 package com.techelevator.projects.model.interfaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.techelevator.projects.model.Department;
@@ -11,7 +12,7 @@ public interface DepartmentDAO {
 	 * 
 	 * @return all departments as Department objects in a List
 	 */
-	public List<Department> getAllDepartments();
+	public List<Department> getAllDepartments(ArrayList<Department> name);
 
 	/**
 	 * Get all the departments whose name contains the search string. Remember
