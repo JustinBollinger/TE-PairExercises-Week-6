@@ -1,5 +1,6 @@
 package com.techelevator.projects.model.jdbc;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,18 +50,19 @@ public class JDBCEmployeeDAO implements EmployeeDAO
 			Long departmentId = rows.getLong("department_id");
 			String firstName = rows.getString("first_name");
 			String lastName = rows.getString("last_name");
-			Date birthDate = rows.getDate("birth_date");
-			String gender = rows.getString("first_name");
-			Date hireDate = rows.getDate("hire_date");
+			LocalDate birthDate = rows.getDate("birth_date").toLocalDate();
+			String gender = rows.getString("gender");
+			LocalDate hireDate = rows.getDate("hire_date").toLocalDate();
 			
 			Employee employee = new Employee();
-			employee.setEmployeeId(employee_id);
-			employee.setDeptId(department_id);
-			employee.
-			employee.
-			employee.
-			employee.
-			employee.
+			
+			employee.setId(employeeId);
+			employee.setDepartmentId(departmentId);
+			employee.setFirstName(firstName);
+			employee.setLastName(lastName);
+			employee.setBirthDay(birthDate);
+			employee.setGender(gender);
+			employee.setHireDate(hireDate);
 			
 			employees.add(employee);
 		}	

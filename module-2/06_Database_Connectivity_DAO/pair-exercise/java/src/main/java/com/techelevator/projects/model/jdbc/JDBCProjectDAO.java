@@ -28,13 +28,13 @@ public class JDBCProjectDAO implements ProjectDAO
 	{
 		List<Project> projects = new ArrayList<Project>();
 		
-		String sql = "SELECT project_id\r\n" + 
-					 "       , name\r\n" + 
-					 "       , from_date\r\n" + 
-					 "       , to_date\r\n" + 
+		String sql = "SELECT project_id " + 
+					 "       , name " + 
+					 "       , from_date " + 
+					 "       , to_date " + 
 					 "FROM project\r\n" + 
-					 "WHERE NOT (to_date IS NULL AND from_date IS NULL)\r\n" + 
-					 "        AND (to_date IS NULL OR to_date > now());";
+					 "WHERE NOT (to_date IS NULL AND from_date IS NULL) " + 
+					 "        AND (to_date IS NULL OR to_date > ?);";
 		
 		LocalDate today = LocalDate.now(); //LocalDate.parse("2020-07-01")
 		
@@ -42,20 +42,24 @@ public class JDBCProjectDAO implements ProjectDAO
 		
 		while(rows.next()) // rows.next() -- means there is another row to process
 		{
+			// LocalDate is tricky because you can't just do rows.getLocalDate();
+						// BUT you can do rows.getDate().toLocalDate(); to cover for that
+			
 			Project project = new Project();
 			
 			long id = rows.getLong("project_id");
 			String name = rows.getString("name");
-			// LocalDate is tricky because you can't just do rows.getLocalDate();
-			// BUT you can do rows.getDate().toLocalDate(); to cover for that
-			Date fromDate = rows.getDate("from_date");
-			Date toDate = rows.getDate("to_date");
 			
-			LocalDate startDate = (rows.getDate("from_date") == null) //if condition
-									? null // value if true
-									: rows.getDate("from_date").toLocalDate(); // value if false
+			LocalDate startDate = (rows.getDate("from_date") == null)
+					? null // value if true
+					: rows.getDate("from_date").toLocalDate(); //value if false
 			
-			LocalDate endDate = rows.getDate("to_date").toLocalDate();
+			LocalDate endDate = (rows.getDate("to_date") == null) //if condition
+					? null
+					: rows.getDate("to_date").toLocalDate();
+					
+			
+			
 			
 			project.setId(id);
 			project.setName(name);

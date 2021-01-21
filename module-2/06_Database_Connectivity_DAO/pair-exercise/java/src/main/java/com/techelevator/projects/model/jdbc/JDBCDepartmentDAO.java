@@ -43,6 +43,7 @@ public class JDBCDepartmentDAO implements DepartmentDAO
 			
 //			Department department = mapRowToDepartment(rows);
 			Department department = new Department();
+			
 			department.setId(id);
 			department.setName(deptName);
 			
@@ -54,8 +55,30 @@ public class JDBCDepartmentDAO implements DepartmentDAO
 	@Override
 	public List<Department> searchDepartmentsByName(String nameSearch)
 	{
+		List<Department> departments = new ArrayList<Department>();
 		
-		return new ArrayList<>();
+		// query written out
+		String query = "SELECT department_id\r\n" + 
+						"        , name\r\n" + 
+					   "FROM department;";
+		
+		// execute the query
+		SqlRowSet rows = jdbcTemplate.queryForRowSet(query);
+		
+		while (rows.next())
+		{
+			String deptName = rows.getString("name");
+
+			Department department = new Department();
+			
+			if (deptName.toString() == nameSearch.toString()) 
+			{
+				department.setName(deptName);
+				departments.add(department);
+			}
+								
+		}
+		return departments;
 	}
 
 	@Override
