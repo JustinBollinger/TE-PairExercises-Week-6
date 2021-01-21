@@ -59,21 +59,21 @@ public class JDBCDepartmentDAO implements DepartmentDAO
 		
 		// query written out
 		String query = "SELECT department_id\r\n" + 
-						"        , name\r\n" + 
-					   "FROM department;";
+				"        , name\r\n" + 
+			   "FROM department;";
 		
 		// execute the query
-		SqlRowSet rows = jdbcTemplate.queryForRowSet(query);
+		SqlRowSet rows = jdbcTemplate.queryForRowSet(query, nameSearch);
 		
 		while (rows.next())
 		{
 			String deptName = rows.getString("name");
-
 			Department department = new Department();
+			department.setName(deptName);
 			
-			if (deptName.toString() == nameSearch.toString()) 
+			if (deptName.toString().equals(nameSearch)) 
 			{
-				department.setName(deptName);
+				
 				departments.add(department);
 			}
 								
@@ -84,12 +84,37 @@ public class JDBCDepartmentDAO implements DepartmentDAO
 	@Override
 	public void saveDepartment(Department updatedDepartment)
 	{
+		String sql = "UPDATE department\r\n" +
+						"SET name = ?\r\n" +
+						"WHERE department_id = ?;";
 		
+		jdbcTemplate.update(sql
+								, updatedDepartment.getName()
+								, updatedDepartment.getId());
 	}
 
 	@Override
 	public Department createDepartment(Department newDepartment)
 	{
+		
+		// This code is just example code
+		
+		
+		
+		List<Department> departments = new ArrayList<Department>();
+		
+		// This query needs to be changed to INSERT data coming from
+		// the argument (newDepartment) that is coming into this method
+		
+		String query = "SELECT department_id\r\n" + 
+				"        , name\r\n" + 
+			   "FROM department;";
+		
+		department.setId(id);
+		department.setName(deptName);
+		
+		departments.add(department);
+		
 		return null;
 	}
 
